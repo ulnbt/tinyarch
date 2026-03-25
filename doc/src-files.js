@@ -1,0 +1,2 @@
+createSrcSidebar('[["tinyarch",["",[["assembler",[],["default_macros.rs","executable_writer.rs","mod.rs","parse.rs","simple_writer.rs"]],["devices",[],["mod.rs","text_output.rs"]],["machine",[["instructions",[["fmt",[],["fmt_binop.rs","fmt_cond.rs","fmt_reg.rs","mod.rs"]]],["binop.rs","condition.rs","conv.rs","decode.rs","encode.rs","mod.rs"]]],["access.rs","execute.rs","interupts.rs","mem_dump.rs","mmio.rs","mod.rs","state.rs"]]],["lib.rs"]]]]');
+//{"start":19,"fragment_lengths":[428]}
