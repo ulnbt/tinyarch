@@ -1,0 +1,21 @@
+
+@term_out -> r1
+@hw_len -> r2
+hw_dat -> r3
+0 -> r4
+
+print_loop:
+    if r4 == r2 jmp finish
+    r3[r4] -> r5
+    r1 + 1 -> r6
+    r5 -> r6[r4]
+    r4 + 1 -> r4
+    jmp print_loop
+
+finish:
+    r2 -> @r1 ; write len
+    HALT
+
+term_out: DAT 0x10000000 ; hw id 0x1
+hw_len:   DAT 12
+hw_dat:   STRING "Hello World!"
