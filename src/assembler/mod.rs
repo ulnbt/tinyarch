@@ -30,7 +30,7 @@ pub fn assemble<T: ExecutableWriter>(src: &str, mut ew: &mut T) -> Result<(), St
     let ew_macros = T::macros();
 
     // pass 1: strip comments, find labels, trim whitespace, apply macros
-    for line in src.lines() {
+    'lines: for line in src.lines() {
         // Strip comments
         let line = line.split(';').next().unwrap().trim();
         if line.is_empty() { continue; }
@@ -49,16 +49,16 @@ pub fn assemble<T: ExecutableWriter>(src: &str, mut ew: &mut T) -> Result<(), St
         // Apply default macros
         for (n, f) in DEFAULT_ASSEMBLER_MACROS {
             if instr.starts_with(n) { 
-                f(n, &mut instructions)?;
-                continue;
+                f(instr, &mut instructions)?;
+                continue 'lines;
             }
         }
 
         // Apply executable writer's macros
         for (n, f) in ew_macros {
             if instr.starts_with(n) { 
-                f(&mut ew, n, &mut instructions)?;
-                continue;
+                f(&mut ew, instr, &mut instructions)?;
+                continue 'lines;
             }
         }
 

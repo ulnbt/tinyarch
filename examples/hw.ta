@@ -17,5 +17,6 @@ finish:
     HALT
 
 term_out: DAT 0x10000000 ; hw id 0x1
-hw_len:   DAT 12
+hw_len:   DAT 13
 hw_dat:   STRING "Hello World!"
+hw_nl:    DAT 10                ; newline (string macro doesn't yet support escaped characters)
