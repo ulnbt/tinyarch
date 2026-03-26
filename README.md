@@ -10,4 +10,4 @@ Currently, you can use the architecture by running the binary with a file:
 
 Or you can use the project as a library and interact with the emulator and assembler directly, including add hardware devices, assembly macros or other things.
 
-Documentation is very in progress, you can see some of it [here](doc/tinyarch/index.html).
+Documentation is very in progress, you can see some of it [here](https://ulnbt.github.io/tinyarch/tinyarch/).
