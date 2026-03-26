@@ -27,12 +27,12 @@ loop:
         ; --- odd branch: n = 3n + 1 ---
         r1 * 3 -> r1
         r1 + 1 -> r1
-        if 0 == 0 jmp loop      ; unconditional
+        jmp loop
 
 even:
         ; --- even branch: n = n / 2 ---
         r1 / 2 -> r1
-        if 0 == 0 jmp loop      ; unconditional
+        jmp loop      ; unconditional
 
 done:
         HALT

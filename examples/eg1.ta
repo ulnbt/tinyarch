@@ -3,21 +3,16 @@
 ; Registers: r1 = counter, r2 = limit, r3 = accumulator
 
 ; --- Initialization ---
-    0 -> r1             ; r1 = 0 (counter)
-    0 -> r3             ; r3 = 0 (accumulator)
-    r1 + 1 -> r1        ; r1 = 1  (start counter at 1, using imm)
-
-; Load the loop limit into r2
-    r2 + 10 -> r2       ; r2 = 10
-
-; --- Loop ---
-; loop_start is at some address, let's say we track it mentally as label 0x0006
+    1 -> r1        ; r1 = 1  (start counter at 1, using imm)
+    10 -> r2       ; r2 = 10 (limit)
+    0 -> r3        ; r3 = 0 (accumulator)
+    
+; Defining a label called "loop", this the position of "loop" used later
 loop:
-    r3 + r1 -> r3       ; accumulator += counter  (register mode)
-    r1 + 1 -> r1        ; counter++               (immediate mode)
+    r3 + r1 -> r3       ; accumulator += counter
+    r1 + 1 -> r1        ; counter++
     if r1 > r2 jmp done ; if counter > limit, exit
-    if 0 == 0 jmp loop  ; unconditional jump back to loop (immediate mode)
+    jmp loop            ; unconditional jump back to loop
 
 done:
-; r3 should now hold 55 (1+2+...+10)
-    HALT
+    HALT        ; Stops the machine, r3 should now hold 55 (1+2+...+10)
