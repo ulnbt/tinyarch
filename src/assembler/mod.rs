@@ -89,10 +89,8 @@ pub fn assemble<T: ExecutableWriter>(src: &str, mut ew: &mut T) -> Result<(), St
 
     // pass 3: encode into writter
     for (pos, instr) in instructions.iter().enumerate() {
-        println!("{instr}");
         match parse::parse_instruction(instr) {
-            Ok(n) => { 
-                println!("==> {}", n);
+            Ok(n) => {
                 ew.write_instruction(n.encode(), pos)?; 
             }
             Err(e) => { return Err(format!( "Assembly error at instruction: {e}" )) }
