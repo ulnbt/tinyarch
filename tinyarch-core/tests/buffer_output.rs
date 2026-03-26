@@ -1,4 +1,4 @@
-use tinyarch_core::{assembler, machine, devices};
+use tinyarch::{assembler, machine, devices};
 
 #[test]
 fn hw_ta_produces_hello_world() {
