@@ -1,0 +1,27 @@
+name: CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: dtolnay/rust-toolchain@stable
+
+      - name: Build workspace
+        run: cargo build --workspace
+
+      - name: Run tests
+        run: cargo test --package tinyarch-core
+
+      - name: Run example programs
+        run: |
+          for f in tinyarch-core/examples/*.ta; do
+            echo "=== Running $f ==="
+            timeout 15 cargo run --package tinyarch-core -- "$f" || exit 1
+          done

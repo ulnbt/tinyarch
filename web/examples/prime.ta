@@ -1,0 +1,90 @@
+        @hw_addr -> rE       ; rE = 0x10000000, terminal base
+        2  -> r1             ; r1 = candidate
+        0    -> r2           ; r2 = found count
+        1000 -> rF           ; rF = target (constant)
+
+main_loop:
+        if r2 == rF jmp done
+        2 -> r3              ; reset trial divisor
+
+trial_loop:
+        r3 * r3 -> r4
+        if r4 > r1 jmp is_prime
+        r1 % r3 -> r5        ; use r5 (not r4) so r4 isn't reused ambiguously
+        if r5 == 0 jmp not_prime
+        r3 + 1 -> r3
+        jmp trial_loop
+
+is_prime:
+        ;DEBUG
+        r2 + 1 -> r2
+        rE + 1 -> r8         ; r8 = char buffer base
+        0 -> r9              ; r9 = char index
+        0 -> rA              ; rA = leading-zero suppression flag
+
+        ; --- Thousands digit ---
+        r1 / 1000 -> r6
+        if r6 == 0 jmp skip_thou
+        r6 + 48 -> rB
+        rB -> r8[r9]
+        r9 + 1 -> r9
+        1 -> rA
+skip_thou:
+
+        ; --- Hundreds digit: r1/100 gives e.g. 79 for 7919; %10 isolates it ---
+        r1 / 100 -> r6
+        r6 % 10  -> r6
+        if r6 == 0 jmp zero_hund
+        r6 + 48 -> rB
+        rB -> r8[r9]
+        r9 + 1 -> r9
+        1 -> rA
+        jmp done_hund
+zero_hund:
+        if rA == 0 jmp done_hund
+        48 -> rB
+        rB -> r8[r9]
+        r9 + 1 -> r9
+done_hund:
+
+        ; --- Tens digit ---
+        r1 / 10 -> r6
+        r6 % 10 -> r6
+        if r6 == 0 jmp zero_tens
+        r6 + 48 -> rB
+        rB -> r8[r9]
+        r9 + 1 -> r9
+        1 -> rA
+        jmp done_tens
+zero_tens:
+        if rA == 0 jmp done_tens
+        48 -> rB
+        rB -> r8[r9]
+        r9 + 1 -> r9
+done_tens:
+
+        ; --- Ones digit (always print) ---
+        r1 % 10 -> r6
+        r6 + 48 -> rB
+        rB -> r8[r9]
+        r9 + 1 -> r9
+
+        ; --- Newline ---
+        10 -> rB
+        rB -> r8[r9]
+        r9 + 1 -> r9
+
+        ; --- Trigger terminal, then wait for it to clear ---
+        r9 -> @rE
+wait_loop:
+        @rE -> rB
+        if rB != 0 jmp wait_loop
+
+not_prime:
+        r1 + 1 -> r1
+        jmp main_loop
+
+done:
+        HALT
+
+hw_addr: DAT 0x10000000
