@@ -1,0 +1,224 @@
+/* ── Catppuccin Mocha palette ─────────────────────────────────────────── */
+:root {
+  --bg:      #1e1e2e;
+  --surface: #313244;
+  --overlay: #45475a;
+  --text:    #cdd6f4;
+  --subtext: #a6adc8;
+  --accent:  #89b4fa;
+  --green:   #a6e3a1;
+  --yellow:  #f9e2af;
+  --red:     #f38ba8;
+  --mono: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace;
+}
+
+/* ── Reset / base ─────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: sans-serif;
+  font-size: 14px;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* ── Header ───────────────────────────────────────────────────────────── */
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 1rem;
+  background: var(--surface);
+  border-bottom: 1px solid var(--overlay);
+  flex-shrink: 0;
+}
+header h1 { font-size: 1rem; color: var(--accent); }
+.gh-link { color: var(--subtext); text-decoration: none; font-size: 0.85rem; }
+.gh-link:hover { color: var(--text); }
+
+/* ── Three-column layout ──────────────────────────────────────────────── */
+main {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  flex: 1;
+  overflow: hidden;
+}
+
+/* ── Editor panel ─────────────────────────────────────────────────────── */
+#editor-panel { display: flex; flex-direction: column; gap: 0.5rem; min-height: 0; }
+
+#toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 0.5rem;
+  background: var(--surface);
+  border-radius: 6px;
+  flex-shrink: 0;
+}
+
+select, button, input[type="text"] {
+  background: var(--overlay);
+  color: var(--text);
+  border: 1px solid #555;
+  border-radius: 4px;
+  padding: 0.25rem 0.5rem;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+button:hover:not(:disabled) { background: #5a5c70; }
+button:disabled { opacity: 0.4; cursor: default; }
+
+#btn-run  { color: var(--green); }
+#btn-step { color: var(--yellow); }
+#btn-reset { color: var(--subtext); }
+
+.speed-label {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.8rem;
+  color: var(--subtext);
+  margin-left: auto;
+}
+#speed-slider { width: 80px; cursor: pointer; }
+#speed-label { min-width: 5rem; }
+
+/* ── CodeMirror host ─────────────────────────────────────────────────── */
+#editor {
+  flex: 1;
+  overflow: auto;
+  border: 1px solid var(--overlay);
+  border-radius: 6px;
+  font-family: var(--mono);
+  font-size: 0.9rem;
+  min-height: 0;
+}
+.cm-editor { height: 100%; }
+.cm-scroller { overflow: auto; }
+
+/* ── Error box ─────────────────────────────────────────────────────────── */
+.error-box {
+  background: #4a1929;
+  border: 1px solid var(--red);
+  color: var(--red);
+  padding: 0.4rem 0.6rem;
+  border-radius: 4px;
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  white-space: pre-wrap;
+  flex-shrink: 0;
+}
+.hidden { display: none !important; }
+
+/* ── Output panel ─────────────────────────────────────────────────────── */
+#output-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  overflow: hidden;
+}
+#output-panel section { display: flex; flex-direction: column; gap: 0.3rem; }
+h2 {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--subtext);
+  flex-shrink: 0;
+}
+
+#terminal {
+  background: #000;
+  color: #33ff33;
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  padding: 0.5rem;
+  border-radius: 4px;
+  overflow-y: auto;
+  height: 180px;
+  white-space: pre-wrap;
+  word-break: break-all;
+  flex-shrink: 0;
+}
+
+.small {
+  font-size: 0.75rem;
+  padding: 0.15rem 0.4rem;
+  align-self: flex-start;
+}
+
+/* ── CPU state ────────────────────────────────────────────────────────── */
+#cpu-status {
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  color: var(--subtext);
+  padding: 0.2rem 0;
+}
+#cpu-state {
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  overflow-y: auto;
+}
+.reg-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 3px;
+}
+.reg-cell {
+  background: var(--surface);
+  padding: 3px 5px;
+  border-radius: 3px;
+  font-size: 0.75rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.reg-cell.changed {
+  background: #2a3a55;
+  color: var(--accent);
+}
+.reg-name { color: var(--subtext); margin-right: 2px; }
+
+/* ── Memory panel ─────────────────────────────────────────────────────── */
+#memory-panel { display: flex; flex-direction: column; gap: 0.5rem; overflow: hidden; }
+#memory-controls { display: flex; align-items: center; gap: 0.4rem; flex-shrink: 0; font-size: 0.82rem; }
+#mem-addr { font-family: var(--mono); width: 5rem; }
+
+#memory-view {
+  flex: 1;
+  overflow-y: auto;
+  font-family: var(--mono);
+  font-size: 0.75rem;
+}
+#memory-view table { border-collapse: collapse; width: 100%; }
+#memory-view tr:nth-child(even) { background: #252535; }
+#memory-view th {
+  color: var(--subtext);
+  text-align: right;
+  padding: 1px 6px 1px 0;
+  white-space: nowrap;
+  user-select: none;
+}
+#memory-view td {
+  padding: 1px 4px;
+  color: var(--text);
+}
+#memory-view td.zero { color: var(--overlay); }
+
+/* ── About section ────────────────────────────────────────────────────── */
+#about {
+  flex-shrink: 0;
+  background: var(--surface);
+  border-top: 1px solid var(--overlay);
+  padding: 0.4rem 1rem;
+  font-size: 0.8rem;
+  color: var(--subtext);
+}
+#about summary { cursor: pointer; }
+#about ul { margin: 0.4rem 0 0 1.2rem; line-height: 1.6; }

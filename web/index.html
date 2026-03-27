@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TinyArch Playground</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>TinyArch v2 — Interactive Playground</h1>
+    <a href="https://github.com/ulnbt/tinyarch" target="_blank" class="gh-link">GitHub</a>
+  </header>
+
+  <main>
+    <div id="editor-panel">
+      <div id="toolbar">
+        <select id="example-select" title="Load an example program">
+          <option value="">Load example…</option>
+          <option value="examples/hw.ta">Hello World</option>
+          <option value="examples/eg1.ta">Sum 1..10</option>
+          <option value="examples/eg2.ta">Collatz</option>
+          <option value="examples/eg3.ta">Sort (random)</option>
+          <option value="examples/lop.ta">Loop</option>
+          <option value="examples/prime.ta">Primes ⚠️</option>
+        </select>
+        <button id="btn-run" title="Assemble and run">▶ Run</button>
+        <button id="btn-step" title="Assemble (if needed) and execute one instruction">Step</button>
+        <button id="btn-pause" title="Pause execution" disabled>⏸ Pause</button>
+        <button id="btn-reset" title="Assemble and reset machine state">↺ Reset</button>
+        <label class="speed-label" title="Instructions per animation frame">
+          Speed:
+          <input type="range" id="speed-slider" min="1" max="5" value="3">
+          <span id="speed-label">10k/frame</span>
+        </label>
+      </div>
+      <div id="editor"></div>
+      <div id="asm-error" class="error-box hidden"></div>
+    </div>
+
+    <div id="output-panel">
+      <section>
+        <h2>Terminal Output</h2>
+        <pre id="terminal"></pre>
+        <button id="btn-clear-term" class="small">Clear</button>
+      </section>
+      <section>
+        <h2>CPU State</h2>
+        <div id="cpu-status"></div>
+        <div id="cpu-state"></div>
+      </section>
+    </div>
+
+    <div id="memory-panel">
+      <h2>Memory Viewer</h2>
+      <div id="memory-controls">
+        <label>Address (hex): 0x<input type="text" id="mem-addr" value="0" size="5"></label>
+        <button id="btn-mem-go" class="small">Go</button>
+      </div>
+      <div id="memory-view"></div>
+    </div>
+  </main>
+
+  <details id="about">
+    <summary>About / Known Limitations</summary>
+    <ul>
+      <li><strong>Stack ops</strong> (push, pop, call, ret) and <strong>interrupts</strong> are not yet implemented — programs using them will crash and show an error.</li>
+      <li><strong>Flag branches</strong> (BrFlagIm/Rg) are not implemented.</li>
+      <li>The cycle limit defaults to <strong>50,000,000</strong>. The Primes example is slow — use maximum speed and wait a moment.</li>
+      <li>MMIO <strong>input</strong> (keyboard → CPU) is not implemented; output only.</li>
+      <li>r0 is the zero register and always reads 0.</li>
+    </ul>
+  </details>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>

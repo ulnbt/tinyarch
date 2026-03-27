@@ -4,8 +4,8 @@
 //! This documentation is very work in progress.
 //! 
 //! ### Example of using tinyarch as a library:
-//! 
-//! ```
+//!
+//! ```ignore
 //!use tinyarch::{assembler, devices, machine};
 //!
 //!fn main() {

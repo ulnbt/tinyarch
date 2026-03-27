@@ -1,0 +1,38 @@
+; ============================================================
+; Collatz Step Counter
+;
+; Registers:
+;   r1 = n (the current value, modified in place)
+;   r2 = step counter (output)
+;   r3 = scratch (odd/even test)
+;   r4 = constant 1 (for comparison and increment)
+;
+; Input:  r1 = starting value of n (caller must set this)
+; Output: r2 = number of steps taken to reach 1
+; ============================================================
+
+        if r1 == 0 jmp done ; Exit if r1 not set.
+
+        0 -> r2             ; step count = 0
+        1 -> r4             ; r4 = 1
+
+loop:
+        if r1 == r4 jmp done    ; if n == 1, finished
+
+        r2 + 1 -> r2            ; steps++
+
+        r1 % 2 -> r3            ; r3 = n mod 2
+        if r3 == 0 jmp even     ; branch if even
+
+        ; --- odd branch: n = 3n + 1 ---
+        r1 * 3 -> r1
+        r1 + 1 -> r1
+        if 0 == 0 jmp loop      ; unconditional
+
+even:
+        ; --- even branch: n = n / 2 ---
+        r1 / 2 -> r1
+        if 0 == 0 jmp loop      ; unconditional
+
+done:
+        HALT
